@@ -67,29 +67,4 @@ contract TokenTransferContract {
     public
     onlyVerifiedToken(address(token))
     returns (bool)
-    {
-        // Check the token balance of the sender
-        uint256 senderBalance = token.balanceOf(msg.sender);
-
-        // Check if the sender has sufficient balance
-        require(senderBalance >= amount, "Insufficient balance");
-
-        // Perform the transfer
-        bool success = token.transferFrom(msg.sender, to, amount);
-
-        // Check if the transfer was successful
-        require(success, "Transfer failed");
-
-        // Emit the transaction completed event
-        Transaction memory transaction = Transaction({
-            sender: msg.sender,
-            receiver: to,
-            amount: amount,
-            message: message
-        });
-
-        emit TransactionCompleted(msg.sender, transaction.receiver, transaction.amount, transaction.message);
-        
-        return true;
-    }
-}
+   
