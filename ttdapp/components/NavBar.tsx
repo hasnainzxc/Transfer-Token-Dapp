@@ -38,52 +38,80 @@ export default function Navbar() {
           onClick={handleMobileMenuToggle}
         />
 
-        <Box
-          display={{ base: mobileMenuOpen ? "block" : "none", md: "block" }}
-          mt={{ base: 4, md: 0 }}
-          width={{ base: "100%", md: "auto" }}
-          position={{ base: "fixed", md: "static" }}
-          top={0}
-          left={0}
-          right={0}
-          bottom={0}
-          zIndex={999}
-          bg="white"
+        {/* Display links in the middle for web view */}
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          spacing={4}
+          display={{ base: "none", md: "flex" }}
+          align="center"
         >
-          <Stack
-            direction="column"
-            spacing={4}
-            align="center"
-            pt={20} // Adjust the padding top value as needed
+          {address && (
+            <>
+              <Link href={"/transfer"} passHref>
+                <Button as="a" variant="link">
+                  Transfer
+                </Button>
+              </Link>
+              <Link href={"/claim"} passHref>
+                <Button as="a" variant="link">
+                  Claim Token
+                </Button>
+              </Link>
+              <Link href={`/profile/${address}`} passHref>
+                <Button as="a" variant="link">
+                  My Account
+                </Button>
+              </Link>
+            </>
+          )}
+        </Stack>
+
+        {/* Render ConnectWallet outside of mobileMenuOpen conditional */}
+        <ConnectWallet
+          btnProps={{
+            size: "sm",
+            variant: "solid",
+            colorScheme: "teal",
+          }}
+        />
+
+        {mobileMenuOpen && (
+          <Box
+            position="fixed"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            zIndex={999}
+            bg="white"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
           >
-            {address && (
-              <>
-                <Link href={"/transfer"} passHref>
-                  <Button as="a" variant="link" onClick={handleMobileMenuToggle}>
-                    Transfer
-                  </Button>
-                </Link>
-                <Link href={"/claim"} passHref>
-                  <Button as="a" variant="link" onClick={handleMobileMenuToggle}>
-                    Claim Token
-                  </Button>
-                </Link>
-                <Link href={`/profile/${address}`} passHref>
-                  <Button as="a" variant="link" onClick={handleMobileMenuToggle}>
-                    My Account
-                  </Button>
-                </Link>
-              </>
-            )}
-            <ConnectWallet
-              btnProps={{
-                size: "sm",
-                variant: "solid",
-                colorScheme: "teal",
-              }}
-            />
-          </Stack>
-        </Box>
+            <Stack direction="column" spacing={4} align="center">
+              {address && (
+                <>
+                  <Link href={"/transfer"} passHref>
+                    <Button as="a" variant="link" onClick={handleMobileMenuToggle}>
+                      Transfer
+                    </Button>
+                  </Link>
+                  <Link href={"/claim"} passHref>
+                    <Button as="a" variant="link" onClick={handleMobileMenuToggle}>
+                      Claim Token
+                    </Button>
+                  </Link>
+                  <Link href={`/profile/${address}`} passHref>
+                    <Button as="a" variant="link" onClick={handleMobileMenuToggle}>
+                      My Account
+                    </Button>
+                  </Link>
+                </>
+              )}
+            </Stack>
+          </Box>
+        )}
       </Box>
     </Box>
   );
