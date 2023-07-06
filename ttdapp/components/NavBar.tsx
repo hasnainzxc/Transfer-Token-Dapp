@@ -2,16 +2,45 @@ import { Box, Button, Heading, IconButton, Stack, useDisclosure } from "@chakra-
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 import Link from "next/link";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function Navbar() {
   const address = useAddress();
   const { isOpen, onToggle } = useDisclosure();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef(null);
 
   const handleMobileMenuToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
+
+  const handleMobileMenuClose = () => {
+    setMobileMenuOpen(false);
+  };
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    const handleEscapeKey = (event) => {
+      if (event.key === "Escape") {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    if (mobileMenuOpen) {
+      document.addEventListener("click", handleOutsideClick);
+      document.addEventListener("keydown", handleEscapeKey);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, [mobileMenuOpen]);
 
   return (
     <Box bg="white" py={4} boxShadow="sm">
@@ -31,12 +60,13 @@ export default function Navbar() {
           </Link>
         </Heading>
 
-        <IconButton
-          aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-          icon={mobileMenuOpen ? <CloseIcon /> : <HamburgerIcon />}
-          display={{ base: "block", md: "none" }}
-          onClick={handleMobileMenuToggle}
-        />
+        <Box zIndex={999} cursor="pointer" onClick={handleMobileMenuToggle}>
+          <IconButton
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            icon={mobileMenuOpen ? <CloseIcon /> : <HamburgerIcon />}
+            display={{ base: "block", md: "none" }}
+          />
+        </Box>
 
         {/* Display links in the middle for web view */}
         <Stack
@@ -64,27 +94,28 @@ export default function Navbar() {
               </Link>
             </>
           )}
-        </Stack>
 
-        {/* Render ConnectWallet outside of mobileMenuOpen conditional */}
-        <ConnectWallet
-          btnProps={{
-            size: "sm",
-            variant: "solid",
-            colorScheme: "teal",
-          }}
-        />
+          {/* Render ConnectWallet in both mobile and web view */}
+          <ConnectWallet
+            btnProps={{
+              size: "sm",
+              variant: "solid",
+              colorScheme: "teal",
+            }}
+          />
+        </Stack>
 
         {mobileMenuOpen && (
           <Box
+            ref={mobileMenuRef}
             position="fixed"
             top={0}
             left={0}
             right={0}
             bottom={0}
-            zIndex={999}
+            zIndex={998} // Decrease zIndex value to allow clicking on the hamburger icon
             bg="white"
-            display="flex"
+            display={{ base: "flex", md: "none" }}
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
@@ -93,23 +124,40 @@ export default function Navbar() {
               {address && (
                 <>
                   <Link href={"/transfer"} passHref>
-                    <Button as="a" variant="link" onClick={handleMobileMenuToggle}>
+                    <Button as="a" variant="link" onClick={handleMobileMenuClose}>
                       Transfer
                     </Button>
                   </Link>
                   <Link href={"/claim"} passHref>
-                    <Button as="a" variant="link" onClick={handleMobileMenuToggle}>
+                    <Button as="a" variant="link" onClick={handleMobileMenuClose}>
                       Claim Token
                     </Button>
                   </Link>
                   <Link href={`/profile/${address}`} passHref>
-                    <Button as="a" variant="link" onClick={handleMobileMenuToggle}>
+                    <Button as="a" variant="link" onClick={handleMobileMenuClose}>
                       My Account
                     </Button>
                   </Link>
                 </>
               )}
+
+              {/* Render ConnectWallet in mobile view */}
+              <ConnectWallet
+                btnProps={{
+                  size: "sm",
+                  variant: "solid",
+                  colorScheme: "teal",
+                }}
+              />
             </Stack>
+            <IconButton
+              aria-label="Close navigation menu"
+              icon={<CloseIcon />}
+              position="absolute"
+              top={4}
+              right={4}
+              onClick={handleMobileMenuClose}
+            />
           </Box>
         )}
       </Box>
