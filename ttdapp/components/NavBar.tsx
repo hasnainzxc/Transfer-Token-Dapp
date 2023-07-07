@@ -72,23 +72,23 @@ export default function Navbar() {
         <Stack
           direction={{ base: "column", md: "row" }}
           spacing={4}
-          display={{ base: "none", md: "flex" }}
+          display={{ base: mobileMenuOpen ? "flex" : "none", md: "flex" }}
           align="center"
         >
           {address && (
             <>
               <Link href={"/transfer"} passHref>
-                <Button as="a" variant="link">
+                <Button as="a" variant="link" onClick={handleMobileMenuClose}>
                   Transfer
                 </Button>
               </Link>
               <Link href={"/claim"} passHref>
-                <Button as="a" variant="link">
+                <Button as="a" variant="link" onClick={handleMobileMenuClose}>
                   Claim Token
                 </Button>
               </Link>
               <Link href={`/profile/${address}`} passHref>
-                <Button as="a" variant="link">
+                <Button as="a" variant="link" onClick={handleMobileMenuClose}>
                   My Account
                 </Button>
               </Link>
@@ -104,62 +104,6 @@ export default function Navbar() {
             }}
           />
         </Stack>
-
-        {mobileMenuOpen && (
-          <Box
-            ref={mobileMenuRef}
-            position="fixed"
-            top={0}
-            left={0}
-            right={0}
-            bottom={0}
-            zIndex={998} // Decrease zIndex value to allow clicking on the hamburger icon
-            bg="white"
-            display={{ base: "flex", md: "none" }}
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Stack direction="column" spacing={4} align="center">
-              {address && (
-                <>
-                  <Link href={"/transfer"} passHref>
-                    <Button as="a" variant="link" onClick={handleMobileMenuClose}>
-                      Transfer
-                    </Button>
-                  </Link>
-                  <Link href={"/claim"} passHref>
-                    <Button as="a" variant="link" onClick={handleMobileMenuClose}>
-                      Claim Token
-                    </Button>
-                  </Link>
-                  <Link href={`/profile/${address}`} passHref>
-                    <Button as="a" variant="link" onClick={handleMobileMenuClose}>
-                      My Account
-                    </Button>
-                  </Link>
-                </>
-              )}
-
-              {/* Render ConnectWallet in mobile view */}
-              <ConnectWallet
-                btnProps={{
-                  size: "sm",
-                  variant: "solid",
-                  colorScheme: "teal",
-                }}
-              />
-            </Stack>
-            <IconButton
-              aria-label="Close navigation menu"
-              icon={<CloseIcon />}
-              position="absolute"
-              top={4}
-              right={4}
-              onClick={handleMobileMenuClose}
-            />
-          </Box>
-        )}
       </Box>
     </Box>
   );
