@@ -11,19 +11,19 @@ export default function TransferPage() {
         direction={isMobile ? "column" : "row"}
         justifyContent="center"
         alignItems="center"
-        h="100vh"
+        minHeight="100vh"
       >
-        <Box flex="1">
+        <Box width="100%" maxWidth={isMobile ? "100%" : "50%"}>
           <TransferCard />
         </Box>
         {!isMobile && (
-          <Box flex="1" ml={8}>
+          <Box width="50%" ml={8}>
             <Events />
           </Box>
         )}
       </Flex>
       {isMobile && (
-        <Box mt={4}>
+        <Box mt={4} width="100%">
           <Events />
         </Box>
       )}

@@ -1,12 +1,14 @@
-import { Container, Divider, Text } from "@chakra-ui/react";
+import { Container, Divider, Text, useBreakpointValue } from "@chakra-ui/react";
 
 export default function Footer() {
-    return (
-        <Container maxW={"100%"} mt={20} height={"100px"}>
-            <Divider />
-            <Container maxW={"1440px"} py={8}>
-                <Text>Footer</Text>
-            </Container>
-        </Container>
-    );
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
+  return (
+    <Container maxW={"100%"} mt={20} height={isMobile ? "auto" : "100px"}>
+      <Divider />
+      <Container maxW={"1440px"} py={8}>
+        <Text textAlign={isMobile ? "center" : "left"}>{isMobile ? "Footer" : "Footer Text"}</Text>
+      </Container>
+    </Container>
+  );
 }
