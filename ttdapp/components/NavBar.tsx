@@ -42,6 +42,21 @@ export default function Navbar() {
     };
   }, [mobileMenuOpen]);
 
+  const handleConnectWallet = async () => {
+    try {
+      // Code to connect wallet using MetaMask or other provider
+      // ...
+
+      // Example: Triggering eth_requestAccounts
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+
+      // Continue with wallet connection logic
+      // ...
+    } catch (error) {
+      console.error("Wallet Connection Error:", error);
+    }
+  };
+
   return (
     <Box bg="white" py={4} boxShadow="sm">
       <Box
@@ -101,6 +116,7 @@ export default function Navbar() {
               size: "sm",
               variant: "solid",
               colorScheme: "teal",
+              onClick: handleConnectWallet,
             }}
           />
         </Stack>
