@@ -1,126 +1,61 @@
-import { Box, Button, Heading, IconButton, Stack, useDisclosure } from "@chakra-ui/react";
+import { Container, Flex, Text, Box, IconButton, useDisclosure } from "@chakra-ui/react";
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
-import Link from "next/link";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 
 export default function Navbar() {
   const address = useAddress();
   const { isOpen, onToggle } = useDisclosure();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const mobileMenuRef = useRef(null);
-
-  const handleMobileMenuToggle = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMenuOpen(false);
-  };
-
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
-        setMobileMenuOpen(false);
-      }
-    };
-
-    const handleEscapeKey = (event) => {
-      if (event.key === "Escape") {
-        setMobileMenuOpen(false);
-      }
-    };
-
-    if (mobileMenuOpen) {
-      document.addEventListener("click", handleOutsideClick);
-      document.addEventListener("keydown", handleEscapeKey);
-    }
-
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-      document.removeEventListener("keydown", handleEscapeKey);
-    };
-  }, [mobileMenuOpen]);
-
-  const handleConnectWallet = async () => {
-    try {
-      // Code to connect wallet using MetaMask or other provider
-      // ...
-
-      // Example: Triggering eth_requestAccounts
-      await window.ethereum.request({ method: "eth_requestAccounts" });
-
-      // Continue with wallet connection logic
-      // ...
-    } catch (error) {
-      console.error("Wallet Connection Error:", error);
-    }
-  };
 
   return (
-    <Box bg="white" py={4} boxShadow="sm">
-      <Box
-        mx="auto"
-        px={{ base: 4, md: 8 }}
-        maxW="7xl"
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <Heading size="md" fontWeight="black">
-          <Link href={"/"} passHref>
-            <Button as="a" variant="link">
-              Transfer App
-            </Button>
-          </Link>
-        </Heading>
+    <Container maxW={"1440px"} py={4}>
+      <Flex flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+        <Link href={"/"}>
+          <Text fontWeight={"black"}>Transfer App</Text>
+        </Link>
 
-        <Box zIndex={999} cursor="pointer" onClick={handleMobileMenuToggle}>
-          <IconButton
-            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-            icon={mobileMenuOpen ? <CloseIcon /> : <HamburgerIcon />}
-            display={{ base: "block", md: "none" }}
-          />
+        <Box display={{ base: "none", md: "block" }}>
+          {address && (
+            <Flex flexDirection={"row"}>
+              <Link href={"/transfer"}>
+                <Text mr={8}>Transfer</Text>
+              </Link>
+              <Link href={"/claim"}>
+                <Text mr={8}>Claim Token</Text>
+              </Link>
+              <Link href={`/profile/${address}`}>
+                <Text>My Account</Text>
+              </Link>
+            </Flex>
+          )}
         </Box>
 
-        {/* Display links in the middle for web view */}
-        <Stack
-          direction={{ base: "column", md: "row" }}
-          spacing={4}
-          display={{ base: mobileMenuOpen ? "flex" : "none", md: "flex" }}
-          align="center"
-        >
-          {address && (
-            <>
-              <Link href={"/transfer"} passHref>
-                <Button as="a" variant="link" onClick={handleMobileMenuClose}>
-                  Transfer
-                </Button>
-              </Link>
-              <Link href={"/claim"} passHref>
-                <Button as="a" variant="link" onClick={handleMobileMenuClose}>
-                  Claim Token
-                </Button>
-              </Link>
-              <Link href={`/profile/${address}`} passHref>
-                <Button as="a" variant="link" onClick={handleMobileMenuClose}>
-                  My Account
-                </Button>
-              </Link>
-            </>
-          )}
-
-          {/* Render ConnectWallet in both mobile and web view */}
-          <ConnectWallet
-            btnProps={{
-              size: "sm",
-              variant: "solid",
-              colorScheme: "teal",
-              onClick: handleConnectWallet,
-            }}
+        <Box display={{ base: "block", md: "none" }}>
+          <IconButton
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+            onClick={onToggle}
           />
-        </Stack>
+        </Box>
+      </Flex>
+
+      <Box display={{ base: isOpen ? "block" : "none", md: "none" }}>
+        {address && (
+          <Flex flexDirection={"column"} mt={4}>
+            <Link href={"/transfer"}>
+              <Text mb={2}>Transfer</Text>
+            </Link>
+            <Link href={"/claim"}>
+              <Text mb={2}>Claim Token</Text>
+            </Link>
+            <Link href={`/profile/${address}`}>
+              <Text mb={2}>My Account</Text>
+            </Link>
+          </Flex>
+        )}
       </Box>
-    </Box>
+
+      <ConnectWallet />
+    </Container>
   );
 }

@@ -14,7 +14,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThirdwebProvider activeChain={activeChain}>
       
       <ChakraProvider>
-      <Navbar />
+        
+      <Navbar></Navbar>
         <Component {...pageProps} />
         
         <Footer />
