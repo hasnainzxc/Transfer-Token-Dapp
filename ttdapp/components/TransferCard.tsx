@@ -7,7 +7,18 @@ import TokenBalance from "./TokenBalance";
 import TransferButton from "./TransferButton";
 import styles from "../styles/Home.module.css";
 
+export default function TransferCard() {
+  const address = useAddress();
 
+  const { contract } = useContract(TRANSFER_CONTRACT_ADDRESS);
+
+  const { data: verifiedTokens, isLoading: isVerifiedTokensLoading } = useContractRead(contract, "getVerifiedTokens");
+
+  const [formData, setFormData] = useState({
+    receiver: "",
+    amount: "",
+    message: "",
+  });
 
   const [selectedToken, setSelectedToken] = useState("");
 
