@@ -78,18 +78,7 @@ export default function TransferCard() {
           value={formData.message}
           onChange={(event) => handleChange(event, "message")}
         />
-        <Box mt={stackSpacing}>
-          {address ? (
-            <TransferButton
-              tokenAddress={selectedToken}
-              receiver={formData.receiver}
-              amount={formData.amount.toString()}
-              message={formData.message}
-            />
-          ) : (
-            <Text>Please connect your wallet to make a transfer.</Text>
-          )}
-        </Box>
+       
       </Stack>
     </Card>
   );
