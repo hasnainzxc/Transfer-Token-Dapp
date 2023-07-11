@@ -2,13 +2,7 @@ import { Box, Container, Flex, Heading, SimpleGrid, Stack, Text, useToast, useBr
 import { MediaRenderer, Web3Button, useContract, useContractMetadata } from "@thirdweb-dev/react";
 import { CALIM_TOKEN_CONTRACT_ADDRESS, CLAIM_TOKEN_IMAGE } from "../const/addresses";
 
-export default function ClaimPage() {
-  const { contract } = useContract(CALIM_TOKEN_CONTRACT_ADDRESS, "token-drop");
-  const { data: contractMetadata } = useContractMetadata(contract);
-  const claimAmount = 10;
-  const toast = useToast();
 
-  const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
     <Container maxW="1440px" h="80vh">
