@@ -13,6 +13,19 @@ export default function TransferPage() {
         alignItems="center"
         minHeight="100vh"
       >
+        <Box width="100%" maxWidth={isMobile ? "100%" : "50%"}>
+          <TransferCard />
+        </Box>
+        {!isMobile && (
+          <Box width="50%" ml={8}>
+            <Events />
+          </Box>
+        )}
+      </Flex>
+      {isMobile && (
+        <Box mt={4} width="100%">
+          <Events />
+        </Box>
       )}
     </Container>
   );
