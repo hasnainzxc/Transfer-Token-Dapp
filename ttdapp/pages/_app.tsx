@@ -11,7 +11,16 @@ const activeChain = "goerli";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    
+    <ThirdwebProvider activeChain={activeChain}>
+      
+      <ChakraProvider>
+        
+      <Navbar></Navbar>
+        <Component {...pageProps} />
+        
+        <Footer />
+      </ChakraProvider>
+    </ThirdwebProvider>
   );
 }
 
