@@ -1,11 +1,4 @@
-import {
-  Container,
-  Flex,
-  Text,
-  Box,
-  IconButton,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Container, Flex, Text, Box, IconButton, useDisclosure } from "@chakra-ui/react";
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Link from "next/link";
@@ -16,11 +9,7 @@ export default function Navbar() {
 
   return (
     <Container maxW={"1440px"} py={4}>
-      <Flex
-        flexDirection={"row"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-      >
+      <Flex flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
         <Link href={"/"}>
           <Text fontWeight={"black"}>Transfer App</Text>
         </Link>
@@ -43,9 +32,7 @@ export default function Navbar() {
 
         <Box display={{ base: "block", md: "none" }}>
           <IconButton
-            aria-label={
-              isOpen ? "Close navigation menu" : "Open navigation menu"
-            }
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
             onClick={onToggle}
           />
@@ -68,7 +55,7 @@ export default function Navbar() {
         )}
       </Box>
 
-      <ConnectWallet />
+      {/* <ConnectWallet /> */}
     </Container>
   );
 }
